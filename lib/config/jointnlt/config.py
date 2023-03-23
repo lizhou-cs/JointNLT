@@ -1,7 +1,6 @@
 from easydict import EasyDict as edict
 import yaml
 
-# TODO 删掉没用参数 重新整理一遍参数作用
 """
 Add default config for TransNLT.
 """

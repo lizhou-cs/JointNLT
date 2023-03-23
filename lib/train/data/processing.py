@@ -346,9 +346,6 @@ class MixformerProcessing(BaseProcessing):
         return mask0 * mask1  # (b, h, w)
 
 
-# TODO: add TransProcessing, the first frame use original picture to predict box
-# todo：修改call部分 传入template 和 search 其中 template不需要corp 只需要resize 和 transform
-# todo 覆写一个Processing类
 class TransNLTProcessing(BaseProcessing):
     """ The processing class used for training LittleBoy. The images are processed in the following way.
     First, the target bounding box is jittered by adding some noise. Next, a square region (called search region )
@@ -639,7 +636,6 @@ class TemplateProcessing(BaseProcessing):
             # Apply transforms
             template_images, template_anno, template_att, template_mask = self.transform[s](
                 image=crops, bbox=boxes, att=att_mask, mask=mask_crops, joint=False)
-            # todo check the data is correct or not
             templates.extend(template_images)
             annos.extend(template_anno)
             atts.extend(template_att)

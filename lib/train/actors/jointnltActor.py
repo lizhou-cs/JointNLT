@@ -1,17 +1,8 @@
-import os
-import random
-
-import cv2
 # import ipdb
-import ipdb
-import numpy
-import numpy as np
 import torch
-from torch.nn import functional as F
 
 from lib.utils.box_ops import box_cxcywh_to_xyxy, box_xywh_to_xyxy
 from . import BaseActor
-# todo 实现一个TransNLTActor
 from ..data.processing import TemplateProcessing
 from ...utils.misc import NestedTensor
 

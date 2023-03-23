@@ -93,8 +93,10 @@ class Corner_Predictor(nn.Module):
         else:
             return exp_x, exp_y
 
+
 class Hierarchical_Corner_Predictor(nn.Module):
     """ Corner Predictor module"""
+
     def __init__(self, inplanes=64, channel=256, feat_sz=20, stride=16, freeze_bn=False):
         super(Hierarchical_Corner_Predictor, self).__init__()
         self.feat_sz = feat_sz
@@ -159,7 +161,6 @@ class Hierarchical_Corner_Predictor(nn.Module):
         x_tl3 = F.interpolate(x_tl3, size=(self.feat_sz * 4, self.feat_sz * 4), mode='bilinear')
 
         x_tl3 = torch.concat((x_tl3, layer1), dim=1)
-        # todo 4 5 6 卷积 多了一个 512 to 256 to
         x_tl4 = self.conv4_tl(x_tl3)
         x_tl5 = self.conv5_tl(x_tl4)
         # (B, C/8, H', W') ->  (B, 1, H', W')
@@ -169,7 +170,7 @@ class Hierarchical_Corner_Predictor(nn.Module):
         x_br1 = self.conv1_br(x)  # (B, C, H/16, W/16)
         x_br1 = torch.concat((x_br1, layer3), dim=1)
         x_br2 = self.conv2_br(x_br1)
-        x_br2 = F.interpolate(x_br2, size=(self.feat_sz*2, self.feat_sz*2), mode='bilinear')
+        x_br2 = F.interpolate(x_br2, size=(self.feat_sz * 2, self.feat_sz * 2), mode='bilinear')
 
         x_br2 = torch.concat((x_br2, layer2), dim=1)
         x_br3 = self.conv3_br(x_br2)
@@ -195,6 +196,7 @@ class Hierarchical_Corner_Predictor(nn.Module):
                 return exp_x, exp_y, score_vec
         else:
             return exp_x, exp_y
+
 
 class MLP(nn.Module):
     """ Very simple multi-layer perceptron (also called FFN)"""
@@ -234,5 +236,3 @@ def build_box_head(cfg):
         return corner_head
     else:
         raise ValueError("HEAD TYPE %s is not supported." % cfg.MODEL.BOX_HEAD.HEAD_TYPE)
-
-
