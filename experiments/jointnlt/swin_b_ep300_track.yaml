@@ -1,0 +1,102 @@
+DATA:
+  MAX_SAMPLE_INTERVAL: 200
+  MEAN:
+  - 0.485
+  - 0.456
+  - 0.406
+  GROUNDING:
+    CENTER_JITTER: 0
+    SCALE_JITTER: 0.5
+    FACTOR: 2.0
+    NUMBER: 1
+    SIZE: 320
+  SEARCH:
+    CENTER_JITTER: 4.5
+    SCALE_JITTER: 0.5
+    NUMBER: 2
+    FACTOR: 5.0
+    SIZE: 320
+  TEMPLATE:
+    CENTER_JITTER: 0
+    SCALE_JITTER: 0
+    FACTOR: 2.0
+    SIZE: 128
+    NUMBER: 1
+  STD:
+    - 0.229
+    - 0.224
+    - 0.225
+  TRAIN:
+    DATASETS_NAME:   #"LASOT", "LASOT_VAL", "TNL2K", "OTB99", "REFCOCO", "REFCOCO+", "REFCOCOG"
+    - LASOT
+    - REFCOCOG
+    - OTB99
+    - TNL2K
+    DATASETS_RATIO:
+    - 1
+    - 1
+    - 1
+    - 1
+    SAMPLE_PER_EPOCH: 60000
+  VAL:
+    DATASETS_NAME:
+    - LASOTTEXT
+    DATASETS_RATIO:
+    - 1
+    SAMPLE_PER_EPOCH: 10000
+  SAMPLER_MODE: 'grounding'
+MODEL:
+  HEAD_TYPE: CORNER
+  BOX_HEAD_HIDDEN_DIM: 256
+  VISUAL:
+    BACKBONE : 'swin_base_patch4_window7_224_in22k'
+  LANGUAGE:
+    TYPE: 'bert-base-uncased'
+    PATH: 'pretrained/bert/bert-base-uncased.tar.gz'
+    VOCAB_PATH: 'pretrained/bert/bert-base-uncased-vocab.txt'
+    BERT:
+      LR: 0.00001
+      ENC_NUM: 12
+      HIDDEN_DIM: 256
+      MAX_QUERY_LEN: 40
+  VL:
+    HIDDEN_DIM: 256
+    DROPOUT: 0.1
+    NHEAD: 8
+    DIM_FEEDFORWARD: 1024
+    ENC_LAYERS: 6
+    NORM_BEFORE : False
+    USE_VIS_CLS : False
+    USE_VIS_SEP : True
+    ACTIVATION : 'GELU'
+    INIT : 'trunc_norm'
+
+TRAIN:
+  BACKBONE_MULTIPLIER: 0.1
+  BATCH_SIZE: 8
+  EPOCH: 300
+  GIOU_WEIGHT: 2.0
+  GRAD_CLIP_NORM: 0.1
+  L1_WEIGHT: 5.0
+  LR: 0.002
+  LR_DROP_EPOCH: 200
+  NUM_WORKER: 8
+  OPTIMIZER: ADAMW  # ['ADAMW', 'RADAM']
+  PRINT_INTERVAL: 50
+  SCHEDULER:
+    TYPE: "WarmMstep"  # choice in ['step', 'Mstep', 'WarmMstep']
+    DECAY_RATE: 0.1
+    WARM_EPOCH: 30
+    MILESTONES: [200, 250, 290]
+    GAMMA: 0.1
+  VAL_EPOCH_INTERVAL: 20
+  WEIGHT_DECAY: 0.0001
+  AMP: True
+TEST:
+  SEARCH_FACTOR: 5.0
+  SEARCH_SIZE: 320
+  TEMPLATE_FACTOR: 2.0
+  TEMPLATE_SIZE: 128
+  GROUNDING_SIZE: 320
+  GROUNDING_FACTOR: 2.0
+  TEST_METHOD: "TRACK"  # choice in ['GROUND', 'TRACK', 'JOINT']
