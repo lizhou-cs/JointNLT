@@ -1,7 +1,7 @@
 import copy
 
 import cv2
-#import ipdb
+# import ipdb
 import torch
 import math
 import cv2 as cv
@@ -10,8 +10,6 @@ import numpy as np
 import random
 
 from PIL import Image
-
-
 
 '''modified from the original test implementation
 Replace cv.BORDER_REPLICATE with cv.BORDER_CONSTANT
@@ -268,6 +266,7 @@ def grounding_resize(im, output_sz, bbox, mask=None):
     att_mask[y1_pad:end_y, x1_pad:end_x] = 0
     return im_crop_padded, box, att_mask, mask_crop_padded, image_top_coords
 
+
 # def grounding_reshape(im, output_sz, bbox, mask=None):
 
 
@@ -345,7 +344,6 @@ def grounding_resize_without_box(im, output_sz, mask=None):
         end_x = None
     att_mask[y1_pad:end_y, x1_pad:end_x] = 0
     return im_crop_padded, att_mask, mask_crop_padded, image_top_coords, resize_factor
-
 
 
 def gauss_1d(sz, sigma, center, end_pad=0):
@@ -482,4 +480,3 @@ def rand_uniform(a, b, shape=1):
         torch.Tensor - tensor of shape=shape
     """
     return (b - a) * torch.rand(shape) + a
-

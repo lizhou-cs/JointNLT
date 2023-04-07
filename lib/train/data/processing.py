@@ -1,7 +1,7 @@
 import os.path
 import traceback
 import cv2
-#import ipdb
+# import ipdb
 import numpy as np
 import torch
 import torch.nn.functional as F
@@ -578,6 +578,16 @@ class TemplateProcessing(BaseProcessing):
         return torch.cat((jittered_center - 0.5 * jittered_size, jittered_size), dim=0)
 
     def _get_templates_and_anno(self, grounding_path, grounding_dict, grounding_image_coords):
+        """
+        args:
+            grounding_path - The path of the grounding_path
+            grounding_dict - The predicted boxes of grounding process
+            grounding_image_coords - The top-left coords of resized grounding images
+        returns:
+            frames - The origin images of grounding patch, without any resize or transform
+            scale_boxes - The target boxes to the size of the original images which are transformed from the predicted
+            boxes
+        """
         for path in grounding_path:
             if isinstance(path, tuple):
                 frames = [opencv_loader(p) for p in path]
@@ -586,28 +596,31 @@ class TemplateProcessing(BaseProcessing):
             original_shapes.append(img.shape)
         # get each original image shape the tensor shape is [b* 3 (h,w,c)]
         original_shapes = torch.tensor(original_shapes, device=self.local_rank)
-        # the predict boxes
+        # the predicted boxes
         pred_boxes = torch.round(grounding_dict * self.output_sz['grounding'])
-        # Compute the IOU boxes between the predict boxes and the resized image in the grounding image
+        # Compute the IOU boxes between the predicted boxes and the resized image in the grounding image
         iou_boxes = return_iou_boxes(box_xywh_to_xyxy(grounding_image_coords), box_cxcywh_to_xyxy(pred_boxes))
         # Compute the iou boxes' relative position in the resize image
-        # Compute x y relative postition
+        # Compute x y relative position
         iou_boxes[:, 0:2] = torch.sub(iou_boxes[:, 0:2], grounding_image_coords[:, 0:2]).clamp(min=0)
         scale_factor = torch.div(original_shapes[:, 1], grounding_image_coords[:, 2]).unsqueeze(-1)
         # the correct size of predict boxes in original image
         scale_boxes = iou_boxes * scale_factor
         return frames, scale_boxes
 
-    def __call__(self, data: TensorDict, grounding_path, grounding_dict, grounding_iamge_coords):
+    def __call__(self, data: TensorDict, grounding_path, grounding_dict, grounding_image_coords):
         """
         args:
             data - The input data, should contain the following fields:
                 'template_images', search_images', 'template_anno', 'search_anno'
+            grounding_path - The path of the grounding_path
+            grounding_dict - The predicted boxes of grounding process
+            grounding_image_coords - The top-left coords of resized grounding images
         returns:
-            TensorDict - output data block with following fields:
-                'template_images', 'search_images', 'template_anno', 'search_anno', 'test_proposals', 'proposal_iou'
+            TensorDict - output data block with following additional fields:
+                'template_images', 'template_att',
         """
-        frames, template_boxes = self._get_templates_and_anno(grounding_path, grounding_dict, grounding_iamge_coords)
+        frames, template_boxes = self._get_templates_and_anno(grounding_path, grounding_dict, grounding_image_coords)
         valid = False
         templates, annos, atts, masks = [], [], [], []
         for i, img in enumerate(frames):
@@ -637,18 +650,15 @@ class TemplateProcessing(BaseProcessing):
             template_images, template_anno, template_att, template_mask = self.transform[s](
                 image=crops, bbox=boxes, att=att_mask, mask=mask_crops, joint=False)
             templates.extend(template_images)
-            annos.extend(template_anno)
+            # annos.extend(template_anno)
             atts.extend(template_att)
-            masks.extend(template_mask)
+            # masks.extend(template_mask)
 
         templates = torch.stack(templates, dim=0)
-        annos = torch.stack(annos, dim=0)
+        # annos = torch.stack(annos, dim=0)
         atts = torch.stack(atts, dim=0)
-        masks = torch.stack(masks, dim=0)
+        # masks = torch.stack(masks, dim=0)
 
         data['template_images'] = templates
-        # Pay Attention  template_anno 是假标签 基于grounding产生的
-        # data['template_anno'] = annos
-        # data['template_masks'] = masks
         data['template_att'] = atts
         return data
