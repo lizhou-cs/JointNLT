@@ -125,7 +125,7 @@ class JointNLT(BaseTracker):
                     self.roi_queue = self.roi_queue[-self.MAX_HIS_FRAME + 1:]
                 roi_list = [self.template_roi_feature]
                 roi_list.extend(self.roi_queue)
-
+                temporal = torch.cat(roi_list, dim=-1)
             with torch.no_grad():
                 out_dict = self.network.forward_test(self.text_dict, self.template_dict, search_patch, temporal)
 
