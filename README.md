@@ -131,7 +131,14 @@ python tracking/test.py jointnlt swin_b_ep300_track --dataset otb --threads 16 -
 python tracking/analysis_results.py --dataset_name otb --tracker_param swin_b_ep300_track
 ```
 
+## Evaluate the grounding performance.
+*Note:* We perform the grounding on the val of refcocog to show our method grounding performance.
 
+```
+# Profiling swin_b_ep300
+python tracking/test_grounding.py --script jointnlt --config swin_b_ep300 --ckpt checkpoints/JointNLT_ep0300.pth.tar
+
+```
 
 
 ## Test FLOPs, and Speed

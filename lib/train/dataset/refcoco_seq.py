@@ -49,7 +49,7 @@ class RefCOCOSeq(BaseVideoDataset):
         root = env_settings().coco_dir if root is None else root
         super().__init__('RefCOCOSeq', root, image_loader)
         self.split = split
-        self.img_pth = os.path.join(root, 'images/mscoco/images/{}{}'.format(split, version))
+        self.img_pth = os.path.join(root, 'images/mscoco/images/{}{}'.format("train", version))
         self.anno_path = os.path.join(root, '{}/instances.json'.format(name))
         self.dataset_name = name
         # Load the COCO set.
