@@ -1,12 +1,15 @@
 # JointNLT
 The official implementation for the **CVPR 2023** paper [_Joint Visual Grounding and Tracking with Natural Language Specification_](https://arxiv.org/abs/2303.12027).
 
-[[Models](https://drive.google.com/drive/folders/1ZKBDhgXgV1GLSzFxw5fqpqdZuX1hjfQe?usp=share_link)][[Raw Results](https://drive.google.com/drive/folders/1vVH3flO4PiWQDfFDAMJjmSHUY0zCXFn7?usp=share_link)]
+[[Models](https://drive.google.com/drive/folders/1ZKBDhgXgV1GLSzFxw5fqpqdZuX1hjfQe?usp=share_link)][[Raw Results](https://drive.google.com/drive/folders/1vVH3flO4PiWQDfFDAMJjmSHUY0zCXFn7?usp=share_link)][[Poster](https://drive.google.com/file/d/1fJ5BKi-SMzNHUtTqcU9grhvNZGrPfd9G/view?usp=sharing)][[Slide](https://drive.google.com/file/d/1MhajqtjUHRp49EtkzL0h09TXUvkcnc7U/view?usp=sharing)]
 
+## Demo
+[![JointNLT](https://res.cloudinary.com/marcomontalbano/image/upload/v1685771624/video_to_markdown/images/google-drive--1P1wx7ag_v2rLIlwgBneg9jzbDPxiAiJb-c05b58ac6eb4c4700831b2b3070cd403.jpg)](https://drive.google.com/file/d/1P1wx7ag_v2rLIlwgBneg9jzbDPxiAiJb/view?usp=drive_link "JointNLT")
+[//]: # (convert the demo link by "https://video-to-markdown.marcomontalbano.com/")
 
-<p align="center">
-  <img width="85%" src="framework.png" alt="Framework"/>
-</p>
+## Framework
+<img width="85%" src="framework.png" alt="Framework"/>
+
 
 
 
