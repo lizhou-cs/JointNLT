@@ -5,7 +5,6 @@ The official implementation for the **CVPR 2023** paper [_Joint Visual Grounding
 
 ## Demo
 [![JointNLT](https://res.cloudinary.com/marcomontalbano/image/upload/v1685771624/video_to_markdown/images/google-drive--1P1wx7ag_v2rLIlwgBneg9jzbDPxiAiJb-c05b58ac6eb4c4700831b2b3070cd403.jpg)](https://drive.google.com/file/d/1P1wx7ag_v2rLIlwgBneg9jzbDPxiAiJb/view?usp=drive_link "JointNLT")
-[//]: # (convert the demo link by "https://video-to-markdown.marcomontalbano.com/")
 
 ## Framework
 <img width="85%" src="framework.png" alt="Framework"/>
